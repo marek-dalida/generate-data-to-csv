@@ -3,13 +3,13 @@ import org.joda.time.DateTime;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class UkAirHelper {
 
-    public static void GenerateMeasures(Faker faker) throws IOException {
+    public static void generateMeasures(Faker faker) throws IOException {
 
         Map<Integer, Integer> substanceLimit = new HashMap<Integer, Integer>() {{
             put(1, 160);
@@ -19,21 +19,23 @@ public class UkAirHelper {
             put(5, 75);
         }};
 
-        int month = 11;
+        int month = 1;
 
-        FileWriter csvWriter = new FileWriter("measures_2018.csv");
+        FileWriter csvWriter = new FileWriter("measures_01.csv");
 
-        csvWriter.append("MEASURE_ID;MEASURE_TIMESTAMP;STATION_ID;SUBSTANCE_ID;MEASURE_VALUE");
+        csvWriter.append("MEASURE_TIMESTAMP;STATION_ID;SUBSTANCE_ID;MEASURE_VALUE");
         csvWriter.append("\n");
 
-        DateTime startDate = new DateTime(2018, 1, 1,0, 0);
-        DateTime endDate  = new DateTime( 2019, 1, 1, 0, 0);
-        for(; startDate.toLocalDateTime().isBefore(endDate.toLocalDateTime()); startDate = startDate.plusHours(1)){
-            Timestamp tp = new Timestamp(startDate.getMillis());
-            for(int stationId =1; stationId <= 75; stationId++){
-                for(int substanceId = 1; substanceId <=5; substanceId++){
+
+        DateTime startDate = new DateTime(2018, month, 1, 0, 0);
+
+        DateTime endDate = new DateTime(2018, month + 1, 1, 0, 0);
+        for (; startDate.toLocalDateTime().isBefore(endDate.toLocalDateTime()); startDate = startDate.plusHours(1)) {
+            Date date = Date.valueOf(startDate.toString());
+            for (int stationId = 1; stationId <= 75; stationId++) {
+                for (int substanceId = 1; substanceId <= 5; substanceId++) {
                     Integer measureValue = faker.number().numberBetween(0, substanceLimit.get(substanceId));
-                    csvWriter.append("999;" + tp + ";" + stationId + ";" + substanceId + ";" + measureValue );
+                    csvWriter.append(date + ";" + stationId + ";" + substanceId + ";" + measureValue);
                     csvWriter.append("\n");
                 }
             }
@@ -45,7 +47,7 @@ public class UkAirHelper {
     }
 
 
-    public static void GenerateStations(Faker faker) throws IOException {
+    public static void generateStations(Faker faker) throws IOException {
 
 
         FileWriter csvWriter = new FileWriter("stations.csv");
@@ -53,7 +55,9 @@ public class UkAirHelper {
         csvWriter.append("Station_Id,Station_Name,Location_Id");
         csvWriter.append("\n");
 
-        for (int i = 1; i < 1000; i++) {
+        String[] locationTypeOptions = {"urban", "suburban", "rural"};
+
+        for (int i = 1; i <= 75; i++) {
 
             String stationName = "Station " + faker.address().streetName();
             csvWriter.append("999," + stationName + "," + i);
@@ -65,7 +69,7 @@ public class UkAirHelper {
 
     }
 
-    public static void GenerateLocations(Faker faker) throws IOException {
+    public static void generateLocations(Faker faker) throws IOException {
         String[] coutryOptions = {"England", "Northern Ireland", "Scotland", "Wales"};
         String[] locationTypeOptions = {"urban", "suburban", "rural"};
 

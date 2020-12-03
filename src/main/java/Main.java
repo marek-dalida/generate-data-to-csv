@@ -8,10 +8,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Faker faker = new Faker();
 
-        //UkAirHelper.GenerateMeasures(faker);
-        //UkAirHelper.GenerateStations(faker);
-        //UkAirHelper.GenerateLocations(faker);
 
+        StagingAreaHelper.generateStationsUK(faker);
+        //StagingAreaHelper.generateLocationsUK(faker);
+        //UkAirHelper.generateMeasures(faker);
+        //UkAirHelper.generateStations(faker);
+        //UkAirHelper.generateLocations(faker);
     }
 
 }
