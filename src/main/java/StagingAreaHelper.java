@@ -11,7 +11,7 @@ public class StagingAreaHelper {
 
     //Stations ID
     //UK 1- 75
-    //Polska 126-200
+    //Polska 76-200
     //US 201-300
 
     public static void generateLocationsUK(Faker faker) throws IOException {
@@ -27,9 +27,9 @@ public class StagingAreaHelper {
         csvWriter.append("LATITUDE");
         csvWriter.append("\n");
 
-        for (int i = 1; i <= 75; i++) {
+        for (int i = 126; i <= 200; i++) {
             String locationName = faker.address().cityName();
-            Integer regionId = faker.random().nextInt(1, 4);
+            Integer regionId = faker.random().nextInt(5, 19);
             String longitude = faker.address().longitude();
             longitude.replace('.', ',');
             String latitude = faker.address().latitude();
@@ -50,12 +50,14 @@ public class StagingAreaHelper {
         csvWriter.append("STATION_NAME");
         csvWriter.append(";");
         csvWriter.append("STATION_TYPE");
+        csvWriter.append(";");
+        csvWriter.append("LOCATION_ID");
         csvWriter.append("\n");
 
-        for (int i = 1; i <= 75; i++) {
+        for (int i = 126; i <= 200; i++) {
             String stationName = "MS " + faker.address().cityName();
             String stationType = stationTypeOptions[faker.random().nextInt(stationTypeOptions.length)];
-            csvWriter.append( stationName + ";" + stationType);
+            csvWriter.append( stationName + ";" + stationType + ";" + i);
             csvWriter.append("\n");
         }
 
